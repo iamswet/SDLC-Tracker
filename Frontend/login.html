@@ -1,32 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <title>Login Page</title>
   <style>
+    body{
+      background-color: whitesmoke;
+    }
     #loginform{
+      background-color: white;
       border: 2px solid black;
-      width: max-content;
+      width: max-content; 
       padding: 20px;
       padding-top: 0px;
-      left: 50%;
-      top: 50%;
-      margin-left: -25%;
       position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); 
+      border-radius: 10px;
+    }
+    #loginform:hover{
+      border: 2px solid black;
+      width: max-content; 
+      padding: 20px;
+      padding-top: 0px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); 
+      border-radius: 10px;
     }
     #loginhead{
       font-family: Arial, Helvetica, sans-serif;
       font-size: 50px;
     }
+    input.ng-untouched {
+      border: 2px solid black;
+      border-radius: 4px;
+    }
+    input.ng-invalid {
+      border: 2px solid red;
+      border-radius: 4px;
+    }
+    input.ng-valid {
+      border: 2px solid rgb(134, 214, 14);
+      border-radius: 4px;
+    }
+    .valid-btn {
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+      padding: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-radius: 8px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .valid-btn:hover {
+      transition: all ease-in-out 0.2s;
+      background-color: black;
+      color: white;
+      padding: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-radius: 8px;
+    }
   </style>
 </head>
-<body>
+<body ng-app="loginApp">
+  <div class="form">
   <div class="form-container">
-  <form id="loginform" name="loginform">
+  <form id="loginform" name="loginform" ng-submit="submitForm()">
     <h1 id="loginhead">Login</h1>
-    Username: <input type="text" id="username" name="username"><br><br>
-    Password: <input type="password" id="password" name="password"><br><br>
+    Username: <input type="text" id="username" name="username" ng-model="username" required><br><br>
+    Password: <input type="password" id="password" name="password" ng-model="password" ng-minlength="8" ng-pattern="/^[a-zA-Z0-9]+$/" required><br><br>
+    <span ng-show="loginform.password.$invalid && !loginform.password.$pristine">Password must be at least 8 alphanumeric characters</span>
+    <br><input type="submit" id="sbtn" value="Login" ng-disabled="loginform.$invalid" ng-class="{'valid-btn': loginform.$valid}">
   </form></div>
+</div>
+
+<script>
+  angular.module('loginApp', [])
+  .controller('LoginController', function($scope) {
+    $scope.submitForm = function() {
+      if ($scope.loginform.$valid) {
+        console.log("Form is valid, submitting...");
+      }
+    };
+  });
+</script>
 </body>
 </html>
